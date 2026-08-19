@@ -1,0 +1,43 @@
+{
+  "name": "longevix6-backend",
+  "version": "1.0.0",
+  "description": "Longevix6 E-Commerce & Clinical Consultation Backend API",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "rimraf dist && tsc",
+    "start": "node dist/server.js",
+    "db:init": "ts-node-dev src/db/initDb.ts"
+  },
+  "keywords": [
+    "longevix6",
+    "ecommerce",
+    "razorpay",
+    "postgresql",
+    "express"
+  ],
+  "author": "Longevix6 Team",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "nodemailer": "^9.0.5",
+    "pg": "^8.12.0",
+    "razorpay": "^2.9.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.5.4",
+    "@types/nodemailer": "^8.0.1",
+    "@types/pg": "^8.11.8",
+    "rimraf": "^6.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.4"
+  }
+}
