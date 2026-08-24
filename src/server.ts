@@ -22,9 +22,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
   'http://localhost:5174',
-  'https://longevix6.com',
-  'https://www.longevix6.com',
   'https://longevix.com',
+  'https://longevix6.com',
   'https://www.longevix.com',
 ];
 
