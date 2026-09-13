@@ -3,19 +3,32 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import path from 'path';
+import cookieParser from 'cookie-parser';
 import orderRoutes from './routes/orderRoutes';
 import paymentRoutes from './routes/paymentRoutes';
 import healthRoutes from './routes/healthRoutes';
 import utilRoutes from './routes/utilRoutes';
+import blogRoutes from './routes/blogRoutes';
+import adminRoutes from './routes/adminRoutes';
+import chatbotMockRoutes from './routes/chatbotMockRoutes';
+import chatbotWebRoutes from './routes/chatbotWebRoutes';
+import metaWebhookRoutes from './routes/metaWebhookRoutes';
 
 dotenv.config();
 
+// Port & Client Configuration
 const app = express();
 const PORT = process.env.PORT || 5000;
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
 // 1. Security & Logging Middlewares
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
 
 const allowedOrigins = [
   CLIENT_URL,
@@ -48,14 +61,48 @@ app.use(
   })
 );
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(
+  express.json({
+    limit: '512kb',
+    verify: (req: any, _res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
+app.use(express.urlencoded({ extended: true, limit: '512kb' }));
+
+// Static file serving for uploads in development mode only
+if (process.env.NODE_ENV !== 'production') {
+  app.use(
+    '/uploads',
+    (req, res, next) => {
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      next();
+    },
+    express.static(path.join(process.cwd(), 'uploads'))
+  );
+}
 
 // 2. API Routes
 app.use('/api', healthRoutes);
 app.use('/api', utilRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/blogs', blogRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/chatbot/mock', chatbotMockRoutes);
+app.use('/api/chatbot/web', chatbotWebRoutes);
+app.use('/api/webhooks/meta', metaWebhookRoutes);
+
+// Visual Interactive Chatbot Simulator Dashboard
+app.get(['/simulator', '/api/chatbot/mock/simulator'], (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'public', 'simulator.html'));
+});
+app.get('/simulator.js', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'public', 'simulator.js'));
+});
 
 // Root route
 app.get('/', (req, res) => {
@@ -63,6 +110,7 @@ app.get('/', (req, res) => {
     message: 'Longevix6 Clinical Nutraceuticals API is running.',
     docs: {
       health: '/api/health',
+      simulator: 'GET /simulator',
       createOrder: 'POST /api/orders/create',
       verifyPayment: 'POST /api/payments/verify',
       razorpayKey: 'GET /api/payments/key',
