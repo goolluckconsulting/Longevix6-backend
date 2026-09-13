@@ -87,7 +87,7 @@ export function generateICalendarEvent(data: ConsultationEmailData, doctorEmail:
     `• Supervising Physician: Dr. Ankita Gupta (Gold Medalist M.D., DM)\\n` +
     `• Patient Concern: ${data.primaryConcern || 'General Clinical Consultation'}\\n\\n` +
     `Clinic Location: Longevix6 Wellness Clinic, Greater Kailash, South Delhi\\n` +
-    `Clinic Contact: +91 87505 31869 / +91 99583 06817`;
+    `Clinic Contact: +91 94038 90566 / +91 99583 06817`;
 
   const location = `Longevix6 Wellness Clinic, Greater Kailash, South Delhi, Delhi 110048`;
 
@@ -220,12 +220,12 @@ export const sendPatientConfirmationEmail = async (data: ConsultationEmailData) 
 
       <div class="location-box">
         <strong>📍 Clinic Location:</strong> Longevix6 Wellness Clinic, Greater Kailash, South Delhi, Delhi 110048<br>
-        <strong>📞 Helpline / WhatsApp:</strong> +91 87505 31869<br>
+        <strong>📞 Helpline / WhatsApp:</strong> +91 94038 90566<br>
         <strong>🕒 Clinic Timings:</strong> Monday – Saturday: 10:00 AM – 07:30 PM
       </div>
 
       <div style="text-align: center; margin-top: 10px;">
-        <a href="https://wa.me/918750531869?text=Hi%20Longevix6%2C%20my%20booking%20reference%20is%20${encodeURIComponent(data.bookingReference)}" class="btn">
+        <a href="https://wa.me/919403890566?text=Hi%20Longevix6%2C%20my%20booking%20reference%20is%20${encodeURIComponent(data.bookingReference)}" class="btn">
           Connect with Clinic on WhatsApp
         </a>
       </div>
